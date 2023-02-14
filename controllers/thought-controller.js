@@ -34,3 +34,9 @@ const userController = {
         .then(dbUserData => res.json(dbUserData))
         .catch(error => res.status(400).json(error));
     },
+
+    udpateUser({body}, res) {
+        User.findOneAndUpdate({id:params.userId}, body, {
+            new:true,
+        })
+    }
