@@ -27,13 +27,13 @@ const userController = {
 
         })
 
-    },
+    };
 
     createUser({body}, res) {
         User.create(body)
         .then(dbUserData => res.json(dbUserData))
         .catch(error => res.status(400).json(error));
-    },
+    };
 
     udpateUser({body}, res) {
         User.findOneAndUpdate({id:params.userId}, body, {
@@ -48,7 +48,7 @@ const userController = {
                     return;
                 }
             })
-    },
+    };
 
     removeUser({body}, res) {
         userController.findOneAndDelete({id:params.userId}, body, {
@@ -61,4 +61,35 @@ const userController = {
                     res.status(404).json({message:"No user found!"})
                 }
             })
-    }
+    };
+
+    addFriend ({params}, res) {
+        User.findOneAndUpdate({_id: params}, {path: { friends: params.friendID}},
+        {new:true})
+        .select("-__v")
+        .populate ({ path:friends,})
+        .then(dbUserData =>
+            {
+                if(!dbUserData) {
+                    res.status(404).json({message:"No user found!"});
+                    return;
+                }
+                })
+            
+
+    };
+
+    deleteFriend ({params}, res) {
+        User.findOneAndDelete({_id: params}, {path: { friends: params.friendID}},
+        {new:true})
+        .select("-__v")
+        .populate ({ path:friends,})
+        .then(dbUserData =>
+            {
+                if(!dbUserData) {
+                    res.status(404).json({message:"No user found!"});
+                    return;
+                }
+                })
+            };
+
