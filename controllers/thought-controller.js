@@ -14,6 +14,20 @@ const thoughtController = {
            });
         },
 
-     getThoughtById({params})   
+     getThoughtById({params}, res) {
+        Thought.fineOne({_id: params.thoughtsId})
+        
+        .popluate({path: "reactions", select: "-__v"})
+        
+        .then(dbThoughtsData => {
+            if(!dbThoughtsData)
+            {res.status(404).json({message: "No Thoughts Found"});
+            return;
+            }
+            res.json(dbThoughtsData)
+        
+        });
+        
+     }   
 
 }
