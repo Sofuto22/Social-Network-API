@@ -50,4 +50,15 @@ const userController = {
             })
     },
 
-    removeUser({body}, res)
+    removeUser({body}, res) {
+        userController.findOneAndDelete({id:params.userId}, body, {
+            new:true,
+        })
+
+        .then(dbUserData => 
+            {
+                if(!dbUserData) {
+                    res.status(404).json({message:"No user found!"})
+                }
+            })
+    }
