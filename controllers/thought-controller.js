@@ -38,5 +38,16 @@ const userController = {
     udpateUser({body}, res) {
         User.findOneAndUpdate({id:params.userId}, body, {
             new:true,
+
         })
-    }
+
+        .then(dbUserData =>
+            {
+                if(!dbUserData) {
+                    res.status(404).json({message:"No user found!"})
+                    return;
+                }
+            })
+    },
+
+    removeUser({body}, res)
