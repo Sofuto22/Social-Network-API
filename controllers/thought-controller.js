@@ -27,7 +27,41 @@ const thoughtController = {
             res.json(dbThoughtsData)
         
         });
+    },
+
+    createThought({params, body}, res) {
+        Thought.create(body)
+        .then(dbThoughtData => res.json(dbThoughtData))
+        .catch(error => res.status(400).json(error))
+        return getAllUsers.findOneAndUpdate({_id:params.thoguhtId});
+    },
+
+    deleteThought ({params}, res) {
+        Thought.findOneAndDelete({_id:params.id})
+        .then(dbThoughtData => {
+            if(!dbThoughtData) {
+                res.statuus(404).json({mesaage:"No Thoughts Found"});
+                return;
+            }
+            res.json(dbThoughtData);
+        })
+        },
+
+        createReaction({params,body}, res) {
+            Thought.create({_id:params.thoughtId}, {reactions: body}),
+            {new: true}
+            .populate({path: "reactions", select:_id})
+            select("-__v")
+            .then(dbThoughtData=> {
+                if(!dbThoughtData) {
+                    res.statuus(404).json({mesaage:"No Thoughts Found"});
+                    return;
+                }
+                res.json(dbThoughtData);
+        })
+    },
+    
         
-     }   
+       
 
 }
